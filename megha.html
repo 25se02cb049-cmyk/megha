@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Monthly Sales Performance</title>
+
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+  <style>
+    body {
+      margin: 0;
+      padding: 40px;
+      font-family: Arial, sans-serif;
+      background: #f5f7fb;
+    }
+
+    .chart-container {
+      max-width: 900px;
+      margin: auto;
+      padding: 30px;
+      background: white;
+      border-radius: 16px;
+      box-shadow: 0 8px 30px rgba(0, 0, 0, 0.08);
+    }
+
+    h2 {
+      margin-top: 0;
+      color: #222;
+    }
+
+    .description {
+      color: #666;
+      margin-bottom: 25px;
+    }
+
+    canvas {
+      width: 100% !important;
+      height: 400px !important;
+    }
+  </style>
+</head>
+
+<body>
+
+  <div class="chart-container">
+    <h2>Monthly Sales Performance</h2>
+    <p class="description">
+      Interactive sales trend with hoverable monthly values.
+    </p>
+
+    <canvas id="salesChart"></canvas>
+  </div>
+
+  <script>
+    const months = ["Jan", "Feb", "Mar", "Apr", "May", "Jun"];
+
+    const sales = [
+      42000,
+      48000,
+      53000,
+      61000,
+      68000,
+      76000
+    ];
+
+    const ctx = document
+      .getElementById("salesChart")
+      .getContext("2d");
+
+    new Chart(ctx, {
+      type: "line",
+
+      data: {
+        labels: months,
+
+        datasets: [{
+          label: "Sales",
+          data: sales,
+
+          borderColor: "#4f46e5",
+          backgroundColor: "rgba(79, 70, 229, 0.12)",
+
+          borderWidth: 3,
+          pointRadius: 5,
+          pointHoverRadius: 8,
+
+          fill: true,
+          tension: 0.35
+        }]
+      },
+
+      options: {
+        responsive: true,
+        maintainAspectRatio: false,
+
+        interaction: {
+          intersect: false,
+          mode: "index"
+        },
+
+        plugins: {
+          legend: {
+            display: true
+          },
+
+          tooltip: {
+            callbacks: {
+              label: function(context) {
+                return " Sales: $" +
+                  context.parsed.y.toLocaleString();
+              }
+            }
+          }
+        },
+
+        scales: {
+          y: {
+            beginAtZero: true,
+
+            ticks: {
+              callback: function(value) {
+                return "$" + value.toLocaleString();
+              }
+            },
+
+            title: {
+              display: true,
+              text: "Sales"
+            }
+          },
+
+          x: {
+            title: {
+              display: true,
+              text: "Month"
+            }
+          }
+        }
+      }
+    });
+  </script>
+
+</body>
+</html>
